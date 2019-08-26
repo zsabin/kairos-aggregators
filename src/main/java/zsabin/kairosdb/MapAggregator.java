@@ -10,7 +10,7 @@ import org.kairosdb.plugin.Aggregator;
 
 import javax.inject.Inject;
 import javax.validation.constraints.NotNull;
-import java.util.Collections;
+import java.util.Arrays;
 import java.util.List;
 import java.util.Objects;
 import java.util.Set;
@@ -22,7 +22,8 @@ import java.util.Set;
 )
 public class MapAggregator implements Aggregator
 {
-    enum Direction {
+    enum Direction
+    {
         ASCENDING,
         DESCENDING
     }
@@ -35,7 +36,7 @@ public class MapAggregator implements Aggregator
             label = "Thresholds",
             description = "List of threshold values"
     )
-    private List<Double> thresholds;
+    private Threshold[] thresholds;
 
     @NotNull
     @FeatureProperty(
@@ -54,15 +55,25 @@ public class MapAggregator implements Aggregator
         this.dataPointFactory = dataPointFactory;
     }
 
-    public void setThresholds(List<Double> thresholds)
+    public void setThresholds(Threshold[] thresholds)
     {
         this.thresholds = thresholds;
-        Collections.sort(thresholds);
+        Arrays.sort(thresholds);
+    }
+
+    public Threshold[] getThresholds()
+    {
+        return thresholds;
     }
 
     public void setDirection(Direction direction)
     {
         this.direction = direction;
+    }
+
+    public Direction getDirection()
+    {
+        return direction;
     }
 
     public boolean canAggregate(String groupType)
@@ -103,11 +114,11 @@ public class MapAggregator implements Aggregator
             DataPoint dp = innerDataPointGroup.next();
 
             int i;
-            for (i = 0; i < thresholds.size() && dp.getDoubleValue() > thresholds.get(i); i++) {
+            for (i = 0; i < thresholds.length && dp.getDoubleValue() > thresholds[i].getValue(); i++) {
             }
 
             if (direction == Direction.DESCENDING) {
-                i = thresholds.size() - i;
+                i = thresholds.length - i;
             }
 
             dp = dataPointFactory.createDataPoint(dp.getTimestamp(), i);

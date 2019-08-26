@@ -10,9 +10,6 @@ import org.kairosdb.core.datastore.EmptyDataPointGroup;
 import org.kairosdb.core.datastore.TagSetImpl;
 import zsabin.kairosdb.MapAggregator.Direction;
 
-import java.util.Arrays;
-import java.util.Collections;
-
 import static org.hamcrest.CoreMatchers.equalTo;
 import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertThat;
@@ -42,9 +39,28 @@ public class MapAggregatorTest
     }
 
     @Test
+    public void test_setThresholds_thresholdsShouldBeSorted()
+    {
+        aggregator.setThresholds(new Threshold[]{
+                new Threshold(3),
+                new Threshold(1),
+                new Threshold(2)
+        });
+
+        assertThat(aggregator.getThresholds(), equalTo(new Threshold[]{
+                new Threshold(1),
+                new Threshold(2),
+                new Threshold(3)
+        }));
+    }
+
+    @Test
     public void test_aggregate_ascendingThresholds()
     {
-        aggregator.setThresholds(Arrays.asList(0.0, 10.0));
+        aggregator.setThresholds(new Threshold[]{
+          new Threshold(0),
+          new Threshold(10)
+        });
         aggregator.setDirection(Direction.ASCENDING);
 
         MutableDataPointGroup group = new MutableDataPointGroup("foo");
@@ -71,7 +87,10 @@ public class MapAggregatorTest
     @Test
     public void test_aggregate_descendingThresholds()
     {
-        aggregator.setThresholds(Arrays.asList(0.0, 10.0));
+        aggregator.setThresholds(new Threshold[]{
+                new Threshold(0),
+                new Threshold(10)
+        });
         aggregator.setDirection(Direction.DESCENDING);
 
         MutableDataPointGroup group = new MutableDataPointGroup("foo");
@@ -97,7 +116,9 @@ public class MapAggregatorTest
     @Test
     public void test_aggregate_ascendingThresholds_boundary()
     {
-        aggregator.setThresholds(Collections.singletonList(0.0));
+        aggregator.setThresholds(new Threshold[]{
+                new Threshold(0)
+        });
         aggregator.setDirection(Direction.ASCENDING);
 
         MutableDataPointGroup group = new MutableDataPointGroup("foo");
@@ -113,7 +134,9 @@ public class MapAggregatorTest
     @Test
     public void test_aggregate_descendingThresholds_boundary()
     {
-        aggregator.setThresholds(Collections.singletonList(0.0));
+        aggregator.setThresholds(new Threshold[]{
+                new Threshold(0)
+        });
         aggregator.setDirection(Direction.DESCENDING);
 
         MutableDataPointGroup group = new MutableDataPointGroup("foo");
