@@ -22,6 +22,11 @@ import java.util.Set;
 )
 public class MapAggregator implements Aggregator
 {
+    enum Direction {
+        ASCENDING,
+        DESCENDING
+    }
+
     private final DoubleDataPointFactory dataPointFactory;
 
     @NotNull
@@ -31,6 +36,17 @@ public class MapAggregator implements Aggregator
             description = "List of threshold values"
     )
     private List<Double> thresholds;
+
+    @NotNull
+    @FeatureProperty(
+            name = "direction",
+            label = "Direction",
+            description = "List of threshold values",
+            type = "enum",
+            options = {"ascending", "descending"},
+            default_value = "ascending"
+    )
+    private Direction direction = Direction.ASCENDING;
 
     @Inject
     public MapAggregator(DoubleDataPointFactory dataPointFactory)
@@ -42,6 +58,11 @@ public class MapAggregator implements Aggregator
     {
         this.thresholds = thresholds;
         Collections.sort(thresholds);
+    }
+
+    public void setDirection(Direction direction)
+    {
+        this.direction = direction;
     }
 
     public boolean canAggregate(String groupType)
@@ -83,6 +104,10 @@ public class MapAggregator implements Aggregator
 
             int i;
             for (i = 0; i < thresholds.size() && dp.getDoubleValue() > thresholds.get(i); i++) {
+            }
+
+            if (direction == Direction.DESCENDING) {
+                i = thresholds.size() - i;
             }
 
             dp = dataPointFactory.createDataPoint(dp.getTimestamp(), i);
