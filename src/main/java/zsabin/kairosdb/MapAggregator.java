@@ -42,7 +42,7 @@ public class MapAggregator implements Aggregator
     @FeatureProperty(
             name = "direction",
             label = "Direction",
-            description = "List of threshold values",
+            description = "Order of partition numbers relative to thresholds",
             type = "enum",
             options = {"ascending", "descending"},
             default_value = "ascending"
@@ -113,15 +113,18 @@ public class MapAggregator implements Aggregator
         {
             DataPoint dp = innerDataPointGroup.next();
 
-            int i;
-            for (i = 0; i < thresholds.length && dp.getDoubleValue() > thresholds[i].getValue(); i++) {
+            int partition;
+            for (partition = 0; partition < thresholds.length; partition++) {
+                if (thresholds[partition].compareValue(dp.getDoubleValue()) < 0) {
+                    break;
+                }
             }
 
             if (direction == Direction.DESCENDING) {
-                i = thresholds.length - i;
+                partition = thresholds.length - partition;
             }
 
-            dp = dataPointFactory.createDataPoint(dp.getTimestamp(), i);
+            dp = dataPointFactory.createDataPoint(dp.getTimestamp(), partition);
 
             return (dp);
         }
