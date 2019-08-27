@@ -2,6 +2,7 @@ package zsabin.kairosdb;
 
 import org.kairosdb.core.annotation.FeatureProperty;
 
+import javax.annotation.Nonnull;
 import java.util.Objects;
 
 public class Threshold implements Comparable<Threshold>
@@ -69,9 +70,13 @@ public class Threshold implements Comparable<Threshold>
     }
 
     @Override
-    public int compareTo(Threshold threshold)
+    public int compareTo(@Nonnull Threshold threshold)
     {
-        return (int) (value - threshold.value);
+        if (equals(threshold)) {
+            return 0;
+        }
+
+        return threshold.compareValue(value);
     }
 
     @Override
