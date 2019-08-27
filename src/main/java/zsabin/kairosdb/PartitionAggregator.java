@@ -42,7 +42,7 @@ public class PartitionAggregator implements Aggregator
     @FeatureProperty(
             name = "direction",
             label = "Direction",
-            description = "Ordering applied to the partition numbers relative to thresholds",
+            description = "The order by which partition numbers are assigned",
             type = "enum",
             options = {"ascending", "descending"},
             default_value = "ascending"

@@ -9,9 +9,10 @@ import org.kairosdb.core.datastore.DataPointGroup;
 import org.kairosdb.core.datastore.EmptyDataPointGroup;
 import org.kairosdb.core.datastore.TagSetImpl;
 import zsabin.kairosdb.PartitionAggregator.Direction;
-import zsabin.kairosdb.Threshold.Boundary;
+import zsabin.kairosdb.Threshold.BoundaryType;
 
 import static org.hamcrest.CoreMatchers.equalTo;
+import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertThat;
 
@@ -23,6 +24,12 @@ public class PartitionAggregatorTest
     public void setup()
     {
         aggregator = new PartitionAggregator(new DoubleDataPointFactoryImpl());
+    }
+
+    @Test
+    public void test_defaultDirection()
+    {
+        assertEquals(Direction.ASCENDING, aggregator.getDirection());
     }
 
     @Test(expected = NullPointerException.class)
@@ -43,15 +50,15 @@ public class PartitionAggregatorTest
     public void test_setThresholds_thresholdsShouldBeSorted()
     {
         aggregator.setThresholds(new Threshold[]{
-                new Threshold(3, Boundary.INFERIOR),
-                new Threshold(1, Boundary.INFERIOR),
-                new Threshold(2, Boundary.INFERIOR)
+                new Threshold(3, BoundaryType.INFERIOR),
+                new Threshold(1, BoundaryType.INFERIOR),
+                new Threshold(2, BoundaryType.INFERIOR)
         });
 
         assertThat(aggregator.getThresholds(), equalTo(new Threshold[]{
-                new Threshold(1, Boundary.INFERIOR),
-                new Threshold(2, Boundary.INFERIOR),
-                new Threshold(3, Boundary.INFERIOR)
+                new Threshold(1, BoundaryType.INFERIOR),
+                new Threshold(2, BoundaryType.INFERIOR),
+                new Threshold(3, BoundaryType.INFERIOR)
         }));
     }
 
@@ -59,8 +66,8 @@ public class PartitionAggregatorTest
     public void test_aggregate_ascendingThresholds()
     {
         aggregator.setThresholds(new Threshold[]{
-                new Threshold(0, Boundary.INFERIOR),
-                new Threshold(10, Boundary.INFERIOR)
+                new Threshold(0, BoundaryType.INFERIOR),
+                new Threshold(10, BoundaryType.INFERIOR)
         });
         aggregator.setDirection(Direction.ASCENDING);
 
@@ -89,8 +96,8 @@ public class PartitionAggregatorTest
     public void test_aggregate_descendingThresholds()
     {
         aggregator.setThresholds(new Threshold[]{
-                new Threshold(0, Boundary.INFERIOR),
-                new Threshold(10, Boundary.INFERIOR)
+                new Threshold(0, BoundaryType.INFERIOR),
+                new Threshold(10, BoundaryType.INFERIOR)
         });
         aggregator.setDirection(Direction.DESCENDING);
 
@@ -118,7 +125,7 @@ public class PartitionAggregatorTest
     public void test_aggregate_inferiorBoundary()
     {
         aggregator.setThresholds(new Threshold[]{
-                new Threshold(0, Boundary.INFERIOR)
+                new Threshold(0, BoundaryType.INFERIOR)
         });
 
         //ascending thresholds
@@ -150,7 +157,7 @@ public class PartitionAggregatorTest
     public void test_aggregate_superiorBoundary()
     {
         aggregator.setThresholds(new Threshold[]{
-                new Threshold(0, Boundary.SUPERIOR)
+                new Threshold(0, BoundaryType.SUPERIOR)
         });
 
         //ascending thresholds

@@ -7,7 +7,7 @@ import java.util.Objects;
 
 public class Threshold implements Comparable<Threshold>
 {
-    enum Boundary
+    enum BoundaryType
     {
         SUPERIOR,
         INFERIOR
@@ -30,16 +30,26 @@ public class Threshold implements Comparable<Threshold>
             options = {"superior", "inferior"},
             default_value = "superior"
     )
-    private Boundary boundary = Boundary.SUPERIOR;
+    private BoundaryType boundaryType = BoundaryType.SUPERIOR;
 
-    private Threshold()
+    Threshold()
     {
     }
 
-    public Threshold(double value, Boundary boundary)
+    public Threshold(double value, BoundaryType boundaryType)
     {
         this.value = value;
-        this.boundary = Objects.requireNonNull(boundary, "boundary must not be null");
+        this.boundaryType = Objects.requireNonNull(boundaryType, "boundaryType must not be null");
+    }
+
+    public double getValue()
+    {
+        return value;
+    }
+
+    public BoundaryType getBoundaryType()
+    {
+        return boundaryType;
     }
 
     public int compareValue(double value)
@@ -50,13 +60,13 @@ public class Threshold implements Comparable<Threshold>
         if (value < this.value) {
             return -1;
         }
-        switch (boundary) {
+        switch (boundaryType) {
             case SUPERIOR:
                 return -1;
             case INFERIOR:
                 return 1;
             default:
-                throw new IllegalStateException("Unknown boundary type: " + boundary);
+                throw new IllegalStateException("Unknown boundary type: " + boundaryType);
         }
     }
 
@@ -65,7 +75,7 @@ public class Threshold implements Comparable<Threshold>
     {
         return "Threshold{" +
                 "value=" + value +
-                "boundary=" + boundary +
+                "boundaryType=" + boundaryType +
                 '}';
     }
 
@@ -90,12 +100,12 @@ public class Threshold implements Comparable<Threshold>
         }
         Threshold threshold = (Threshold) o;
         return Double.compare(threshold.value, value) == 0 &&
-                boundary == threshold.boundary;
+                boundaryType == threshold.boundaryType;
     }
 
     @Override
     public int hashCode()
     {
-        return Objects.hash(value, boundary);
+        return Objects.hash(value, boundaryType);
     }
 }
