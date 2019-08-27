@@ -2,7 +2,6 @@ package zsabin.kairosdb;
 
 import org.kairosdb.core.DataPoint;
 import org.kairosdb.core.annotation.FeatureComponent;
-import org.kairosdb.core.annotation.FeatureCompoundProperty;
 import org.kairosdb.core.annotation.FeatureProperty;
 import org.kairosdb.core.datapoints.DoubleDataPointFactory;
 import org.kairosdb.core.datastore.DataPointGroup;
@@ -17,11 +16,11 @@ import java.util.Objects;
 import java.util.Set;
 
 @FeatureComponent(
-        name = "map",
-        label = "MAP",
-        description = "Maps each data point to a new value based on a configurable set of thresholds"
+        name = "partition",
+        label = "PARTITION",
+        description = "Partitions each data point based on a set of thresholds"
 )
-public class MapAggregator implements Aggregator
+public class PartitionAggregator implements Aggregator
 {
     enum Direction
     {
@@ -43,7 +42,7 @@ public class MapAggregator implements Aggregator
     @FeatureProperty(
             name = "direction",
             label = "Direction",
-            description = "Order of partition numbers relative to thresholds",
+            description = "Ordering applied to the partition numbers relative to thresholds",
             type = "enum",
             options = {"ascending", "descending"},
             default_value = "ascending"
@@ -51,7 +50,7 @@ public class MapAggregator implements Aggregator
     private Direction direction = Direction.ASCENDING;
 
     @Inject
-    public MapAggregator(DoubleDataPointFactory dataPointFactory)
+    public PartitionAggregator(DoubleDataPointFactory dataPointFactory)
     {
         this.dataPointFactory = dataPointFactory;
     }
@@ -125,9 +124,7 @@ public class MapAggregator implements Aggregator
                 partition = thresholds.length - partition;
             }
 
-            dp = dataPointFactory.createDataPoint(dp.getTimestamp(), partition);
-
-            return (dp);
+            return dataPointFactory.createDataPoint(dp.getTimestamp(), partition);
         }
 
         @Override

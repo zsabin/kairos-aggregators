@@ -8,6 +8,6 @@ public class AggregatorModule extends AbstractModule
     @Override
     protected void configure()
     {
-        bind(MapAggregator.class).in(Singleton.class);
+        bind(PartitionAggregator.class).in(Singleton.class);
     }
 }

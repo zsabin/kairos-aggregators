@@ -8,21 +8,21 @@ import org.kairosdb.core.datapoints.DoubleDataPointFactoryImpl;
 import org.kairosdb.core.datastore.DataPointGroup;
 import org.kairosdb.core.datastore.EmptyDataPointGroup;
 import org.kairosdb.core.datastore.TagSetImpl;
-import zsabin.kairosdb.MapAggregator.Direction;
+import zsabin.kairosdb.PartitionAggregator.Direction;
 import zsabin.kairosdb.Threshold.Boundary;
 
 import static org.hamcrest.CoreMatchers.equalTo;
 import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertThat;
 
-public class MapAggregatorTest
+public class PartitionAggregatorTest
 {
-    private MapAggregator aggregator;
+    private PartitionAggregator aggregator;
 
     @Before
     public void setup()
     {
-        aggregator = new MapAggregator(new DoubleDataPointFactoryImpl());
+        aggregator = new PartitionAggregator(new DoubleDataPointFactoryImpl());
     }
 
     @Test(expected = NullPointerException.class)
