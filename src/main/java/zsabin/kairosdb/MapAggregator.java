@@ -2,6 +2,7 @@ package zsabin.kairosdb;
 
 import org.kairosdb.core.DataPoint;
 import org.kairosdb.core.annotation.FeatureComponent;
+import org.kairosdb.core.annotation.FeatureCompoundProperty;
 import org.kairosdb.core.annotation.FeatureProperty;
 import org.kairosdb.core.datapoints.DoubleDataPointFactory;
 import org.kairosdb.core.datastore.DataPointGroup;
@@ -34,7 +35,7 @@ public class MapAggregator implements Aggregator
     @FeatureProperty(
             name = "thresholds",
             label = "Thresholds",
-            description = "List of threshold values"
+            description = "List of thresholds"
     )
     private Threshold[] thresholds;
 

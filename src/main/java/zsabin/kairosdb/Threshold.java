@@ -6,13 +6,6 @@ import java.util.Objects;
 
 public class Threshold implements Comparable<Threshold>
 {
-    @FeatureProperty(
-            name = "value",
-            label = "Value",
-            description = "The value of the threshold"
-    )
-    private double value;
-
     enum Boundary
     {
         SUPERIOR,
@@ -20,13 +13,23 @@ public class Threshold implements Comparable<Threshold>
     }
 
     @FeatureProperty(
+            name = "value",
+            label = "Value",
+            description = "The value of the threshold"
+    )
+    private double value;
+
+    @FeatureProperty(
             name = "boundary",
             label = "Boundary",
             description = "Determines how to compare against values equal to the threshold value. " +
                     "Values equal to the threshold value are greater than thresholds with inferior boundaries " +
-                    "and less than thresholds with superior boundaries."
+                    "and less than thresholds with superior boundaries.",
+            type = "enum",
+            options = {"superior", "inferior"},
+            default_value = "superior"
     )
-    private Boundary boundary;
+    private Boundary boundary = Boundary.SUPERIOR;
 
     private Threshold()
     {
