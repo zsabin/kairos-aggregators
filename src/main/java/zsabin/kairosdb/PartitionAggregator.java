@@ -22,7 +22,7 @@ import java.util.Set;
 )
 public class PartitionAggregator implements Aggregator
 {
-    enum Direction
+    enum Order
     {
         ASCENDING,
         DESCENDING
@@ -40,14 +40,14 @@ public class PartitionAggregator implements Aggregator
 
     @NotNull
     @FeatureProperty(
-            name = "direction",
-            label = "Direction",
+            name = "order",
+            label = "Order",
             description = "The order by which partition values are assigned",
             type = "enum",
             options = {"ascending", "descending"},
             default_value = "ascending"
     )
-    private Direction direction = Direction.ASCENDING;
+    private Order order = Order.ASCENDING;
 
     @Inject
     public PartitionAggregator(DoubleDataPointFactory dataPointFactory)
@@ -66,14 +66,14 @@ public class PartitionAggregator implements Aggregator
         return thresholds;
     }
 
-    public void setDirection(Direction direction)
+    public void setOrder(Order order)
     {
-        this.direction = direction;
+        this.order = order;
     }
 
-    public Direction getDirection()
+    public Order getOrder()
     {
-        return direction;
+        return order;
     }
 
     public boolean canAggregate(String groupType)
@@ -120,7 +120,7 @@ public class PartitionAggregator implements Aggregator
                 }
             }
 
-            if (direction == Direction.DESCENDING) {
+            if (order == Order.DESCENDING) {
                 partition = thresholds.length - partition;
             }
 

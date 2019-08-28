@@ -8,7 +8,7 @@ import org.kairosdb.core.datapoints.DoubleDataPointFactoryImpl;
 import org.kairosdb.core.datastore.DataPointGroup;
 import org.kairosdb.core.datastore.EmptyDataPointGroup;
 import org.kairosdb.core.datastore.TagSetImpl;
-import zsabin.kairosdb.PartitionAggregator.Direction;
+import zsabin.kairosdb.PartitionAggregator.Order;
 import zsabin.kairosdb.Threshold.Boundary;
 
 import static org.hamcrest.CoreMatchers.equalTo;
@@ -29,7 +29,7 @@ public class PartitionAggregatorTest
     @Test
     public void test_defaultDirection()
     {
-        assertEquals(Direction.ASCENDING, aggregator.getDirection());
+        assertEquals(Order.ASCENDING, aggregator.getOrder());
     }
 
     @Test(expected = NullPointerException.class)
@@ -69,7 +69,7 @@ public class PartitionAggregatorTest
                 new Threshold(0, Boundary.INFERIOR),
                 new Threshold(10, Boundary.INFERIOR)
         });
-        aggregator.setDirection(Direction.ASCENDING);
+        aggregator.setOrder(Order.ASCENDING);
 
         MutableDataPointGroup group = new MutableDataPointGroup("foo");
         group.addDataPoint(new DoubleDataPoint(0, -1));
@@ -99,7 +99,7 @@ public class PartitionAggregatorTest
                 new Threshold(0, Boundary.INFERIOR),
                 new Threshold(10, Boundary.INFERIOR)
         });
-        aggregator.setDirection(Direction.DESCENDING);
+        aggregator.setOrder(Order.DESCENDING);
 
         MutableDataPointGroup group = new MutableDataPointGroup("foo");
         group.addDataPoint(new DoubleDataPoint(0, -1));
@@ -129,7 +129,7 @@ public class PartitionAggregatorTest
         });
 
         //ascending thresholds
-        aggregator.setDirection(Direction.ASCENDING);
+        aggregator.setOrder(Order.ASCENDING);
 
         MutableDataPointGroup group = new MutableDataPointGroup("foo");
         group.addDataPoint(new DoubleDataPoint(0, 0));
@@ -141,7 +141,7 @@ public class PartitionAggregatorTest
         assertThat(dataPoint.getDoubleValue(), equalTo(1.0));
 
         //descending thresholds
-        aggregator.setDirection(Direction.DESCENDING);
+        aggregator.setOrder(Order.DESCENDING);
 
         group = new MutableDataPointGroup("foo");
         group.addDataPoint(new DoubleDataPoint(0, 0));
@@ -161,7 +161,7 @@ public class PartitionAggregatorTest
         });
 
         //ascending thresholds
-        aggregator.setDirection(Direction.ASCENDING);
+        aggregator.setOrder(Order.ASCENDING);
 
         MutableDataPointGroup group = new MutableDataPointGroup("foo");
         group.addDataPoint(new DoubleDataPoint(0, 0));
@@ -173,7 +173,7 @@ public class PartitionAggregatorTest
         assertThat(dataPoint.getDoubleValue(), equalTo(0.0));
 
         //descending thresholds
-        aggregator.setDirection(Direction.DESCENDING);
+        aggregator.setOrder(Order.DESCENDING);
 
         group = new MutableDataPointGroup("foo");
         group.addDataPoint(new DoubleDataPoint(0, 0));

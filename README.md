@@ -5,7 +5,7 @@ This project provides custom aggregators for KairosDB. See https://kairosdb.gith
 Partitions the data according to a set of thresholds. Each data point is mapped to a value between 0 and n where n is the number of thresholds.
 
 Parameters:
-* `direction`: the order by which partition values are assigned
+* `order`: the order by which partition values are assigned. Either `ascending` or `descending`.
 * `thresholds`: an unordered list of thresholds
     * `value`: the threshold value
     * `boundary`: determines how to compare against values equal to the threshold value. One of either `superior` or `inferior`.
@@ -15,7 +15,7 @@ Example:
 ```
 {
     "name": "partition",
-    "direction": "ascending",
+    "order": "ascending",
     "thresholds": [
         {
             "value": 0,
@@ -40,7 +40,7 @@ The above configuration would yield the following results:
 |             11 |                     2 |
 
 
-The same configuration with `descending` direction would yield equivalent results, except with inverted partition numbering:  
+The same configuration with `descending` order would yield equivalent results, except with inverted partition numbering:  
 
 | raw data point | aggregated data point |
 |---------------:|----------------------:|
