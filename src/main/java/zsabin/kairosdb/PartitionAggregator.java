@@ -18,7 +18,7 @@ import java.util.Set;
 @FeatureComponent(
         name = "partition",
         label = "PARTITION",
-        description = "Partitions each data point based on a set of thresholds"
+        description = "Partitions the data according to a set of thresholds. Each data point is mapped to a value between 0 and n where n is the number of thresholds."
 )
 public class PartitionAggregator implements Aggregator
 {
@@ -34,7 +34,7 @@ public class PartitionAggregator implements Aggregator
     @FeatureProperty(
             name = "thresholds",
             label = "Thresholds",
-            description = "List of thresholds"
+            description = "A set of thresholds"
     )
     private Threshold[] thresholds;
 
@@ -42,7 +42,7 @@ public class PartitionAggregator implements Aggregator
     @FeatureProperty(
             name = "direction",
             label = "Direction",
-            description = "The order by which partition numbers are assigned",
+            description = "The order by which partition values are assigned",
             type = "enum",
             options = {"ascending", "descending"},
             default_value = "ascending"
