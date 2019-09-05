@@ -1,12 +1,12 @@
 # KairosDB Aggregators
 This project provides custom aggregators for KairosDB. See https://kairosdb.github.io/docs/build/html/kairosdevelopment/Aggregators_and_GroupBys.html for installation instructions.
 
-## Partition Aggregator
-Partitions the data according to a set of thresholds. Each data point is mapped to a value between 0 and n where n is the number of thresholds.
+## Score Aggregator
+Scores the data based on a set of thresholds. Each data point will be mapped to a value between 0 and n where n is the number of thresholds.
 
 Parameters:
-* `order`: the order by which partition values are assigned. Either `ascending` or `descending`.
-* `thresholds`: an unordered list of thresholds
+* `order`: the order by which scores are assigned. Either `ascending` or `descending`.
+* `thresholds`: a set of thresholds
     * `value`: the threshold value
     * `boundary`: determines how to compare against values equal to the threshold value. One of either `superior` or `inferior`.
     Values equal to the threshold value are greater than thresholds with inferior boundaries and less than thresholds with superior boundaries.
@@ -14,7 +14,7 @@ Parameters:
 Example:
 ```
 {
-    "name": "partition",
+    "name": "score",
     "order": "ascending",
     "thresholds": [
         {
@@ -40,7 +40,7 @@ The above configuration would yield the following results:
 |             11 |                     2 |
 
 
-The same configuration with `descending` order would yield equivalent results, except with inverted partition numbering:  
+The same configuration with `descending` order would yield equivalent results, except with inverted scores:  
 
 | raw data point | aggregated data point |
 |---------------:|----------------------:|

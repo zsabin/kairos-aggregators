@@ -8,7 +8,7 @@ import org.kairosdb.core.datapoints.DoubleDataPointFactoryImpl;
 import org.kairosdb.core.datastore.DataPointGroup;
 import org.kairosdb.core.datastore.EmptyDataPointGroup;
 import org.kairosdb.core.datastore.TagSetImpl;
-import zsabin.kairosdb.PartitionAggregator.Order;
+import zsabin.kairosdb.ScoreAggregator.Order;
 import zsabin.kairosdb.Threshold.Boundary;
 
 import static org.hamcrest.CoreMatchers.equalTo;
@@ -16,14 +16,14 @@ import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertThat;
 
-public class PartitionAggregatorTest
+public class ScoreAggregatorTest
 {
-    private PartitionAggregator aggregator;
+    private ScoreAggregator aggregator;
 
     @Before
     public void setup()
     {
-        aggregator = new PartitionAggregator(new DoubleDataPointFactoryImpl());
+        aggregator = new ScoreAggregator(new DoubleDataPointFactoryImpl());
     }
 
     @Test

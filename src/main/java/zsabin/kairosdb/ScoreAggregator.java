@@ -16,11 +16,11 @@ import java.util.Objects;
 import java.util.Set;
 
 @FeatureComponent(
-        name = "partition",
-        label = "PARTITION",
-        description = "Partitions the data according to a set of thresholds. Each data point is mapped to a value between 0 and n where n is the number of thresholds."
+        name = "score",
+        label = "SCORE",
+        description = "Scores the data based on a set of thresholds. Each data point will be mapped to a value between 0 and n where n is the number of thresholds."
 )
-public class PartitionAggregator implements Aggregator
+public class ScoreAggregator implements Aggregator
 {
     enum Order
     {
@@ -42,7 +42,7 @@ public class PartitionAggregator implements Aggregator
     @FeatureProperty(
             name = "order",
             label = "Order",
-            description = "The order by which partition values are assigned",
+            description = "The order by which scores are assigned",
             type = "enum",
             options = {"ascending", "descending"},
             default_value = "ascending"
@@ -50,7 +50,7 @@ public class PartitionAggregator implements Aggregator
     private Order order = Order.ASCENDING;
 
     @Inject
-    public PartitionAggregator(DoubleDataPointFactory dataPointFactory)
+    public ScoreAggregator(DoubleDataPointFactory dataPointFactory)
     {
         this.dataPointFactory = dataPointFactory;
     }
@@ -113,18 +113,18 @@ public class PartitionAggregator implements Aggregator
         {
             DataPoint dp = innerDataPointGroup.next();
 
-            int partition;
-            for (partition = 0; partition < thresholds.length; partition++) {
-                if (thresholds[partition].compareValue(dp.getDoubleValue()) < 0) {
+            int score;
+            for (score = 0; score < thresholds.length; score++) {
+                if (thresholds[score].compareValue(dp.getDoubleValue()) < 0) {
                     break;
                 }
             }
 
             if (order == Order.DESCENDING) {
-                partition = thresholds.length - partition;
+                score = thresholds.length - score;
             }
 
-            return dataPointFactory.createDataPoint(dp.getTimestamp(), partition);
+            return dataPointFactory.createDataPoint(dp.getTimestamp(), score);
         }
 
         @Override

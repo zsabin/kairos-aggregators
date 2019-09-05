@@ -8,6 +8,6 @@ public class AggregatorModule extends AbstractModule
     @Override
     protected void configure()
     {
-        bind(PartitionAggregator.class).in(Singleton.class);
+        bind(ScoreAggregator.class).in(Singleton.class);
     }
 }
